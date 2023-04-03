@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'jquery/jquery-3.5.0.min.js' %}"></script>
+
+    <title>Codoid Project</title>
+  </head>
+  <body>
+
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+    <div class="alert alert-danger" role="alert" style="margin-top:30px;">
+      {{message}}
+    </div>
+    {% else %}
+    <div class="alert alert-{{ message.tags }}">
+      {{message}}
+    </div>
+    {% endif %}
+    {% endfor %}
+
+
+    {% if user.is_authenticated %}
+  
+    <div class="container-fluid">
+    <div class="col-md-offset-2 col-md-3">
+    
+    <h4 class="page-header text-primary text-center">Welcome to Codiod Project</h4>
+    
+    <form action="/addData" method="POST" autocomplete="off">
+      {% csrf_token %}
+   
+    <div class="form-group">
+      <label>Master: What is 7x5:</label>
+      <input type="number" min="1" required  name="multiple" class="form-control">
+    </div> 
+    
+    <div class="form-group">
+      <label>Master: What is 4+9:</label>
+      <input type="number" min="1" required name="plus" class="form-control">
+      </div> 
+     
+    <div class="form-group">
+      <label>Master: What is 8-3:</label>
+      <input type="number" min="1" required name="minus" class="form-control">
+    </div> 
+   
+    <div class="form-group">
+      <label>Master: What is 6/2:</label>
+      <input type="number" min="1" required  name="divide" class="form-control">
+    </div>
+    
+    <div class="form-group pull-right">
+      <input type="submit" name="" value="Submit" class="btn btn-primary">
+      <input type="reset" name="" value="Clear" class="btn btn-danger">
+    </div>
+    
+   </form>
+    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+
+    </div>
+    
+  
+    
+<div class="col-md-offset-6">
+{% if datas %}
+  <h3 class="page-header text-center text-primary">View Details</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Multiple</th>
+        <th>Addition</th>
+        <th>Subtraction</th>
+        <th>Division</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for data in datas %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{data.Multiple}}</td>
+        <td>{{data.Plus}}</td>
+        <td>{{data.Minus}}</td>
+        <td>{{data.Divide}}</td>
+        <td><a class="btn btn-danger" href="/delete{{data.id}}">Delete</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+</div>
+    {% else %}
+    <h4>Welcome to Spritle Project</h4>
+    <a href="{% url 'signup' %}" class="btn btn-primary">Signup</a>  
+    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>  
+   {% endif %}
+  </body>
+</html>
+
+<script>
+  $(document).ready(function(){
+    $(".alert").hide(4000);
+  });
+</script>
